@@ -21,6 +21,7 @@ public class Comment {
     private String text;
 
     @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
     @ManyToOne

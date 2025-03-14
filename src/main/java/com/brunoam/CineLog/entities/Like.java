@@ -11,6 +11,7 @@ import java.util.List;
 @Entity
 @Getter
 @Builder
+@Table(name = "userLike")
 @AllArgsConstructor
 @NoArgsConstructor
 public class Like {
@@ -19,6 +20,7 @@ public class Like {
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
     @ManyToOne

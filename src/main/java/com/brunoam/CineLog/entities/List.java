@@ -27,6 +27,7 @@ public class List {
     private Boolean isPublic;
 
     @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
     @ManyToOne

@@ -16,10 +16,11 @@ public class Follow {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JoinColumn(name = "follower_id")
     @ManyToOne
+    @JoinColumn(name = "follower_id", referencedColumnName = "id")
     private User follower;
 
     @ManyToOne
+    @JoinColumn(name = "followed_id", referencedColumnName = "id")
     private User followed;
 }

@@ -1,6 +1,6 @@
 package com.brunoam.CineLog.enums;
 
-public enum RoleName {
+public enum Role {
     ROLE_ADMIN,
     ROLE_USER;
 }
