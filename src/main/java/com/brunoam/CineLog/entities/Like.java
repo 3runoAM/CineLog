@@ -22,10 +22,10 @@ public class Like {
     private User user;
 
     @ManyToOne
-    @Column(nullable = true)
+    @JoinColumn(nullable = true)
     private Review review;
 
-    @ManyToOne
+    @OneToMany
     @Column(nullable = true)
     private List<com.brunoam.CineLog.entities.List> list;
 }

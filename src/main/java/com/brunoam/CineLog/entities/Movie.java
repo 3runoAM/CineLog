@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.URL;
 import java.util.List;
 
-
 @Entity
 @Getter
 @Builder

@@ -24,10 +24,10 @@ public class Comment {
     private User user;
 
     @ManyToOne
-    @Column(nullable = true)
+    @JoinColumn(nullable = true)
     private Review review;
 
     @ManyToOne
-    @Column(nullable = true)
+    @JoinColumn(nullable = true)
     private List list;
 }
