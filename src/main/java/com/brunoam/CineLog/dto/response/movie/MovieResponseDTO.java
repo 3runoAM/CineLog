@@ -8,7 +8,7 @@ public record MovieResponseDTO(
         Integer releaseYear,
         String director,
         String synopsis,
-       String posterURL,
+        String posterURL,
         Boolean isCustom,
         Double averageRating,
         Double popularityScore,

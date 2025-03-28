@@ -62,6 +62,4 @@ public class User {
 
     @OneToMany
     private List<Notification> notifications;
-
-
 }
