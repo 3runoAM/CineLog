@@ -15,6 +15,6 @@ public record MovieRequestDTO(
         @NotBlank @Size(min = 10, max = 5000) String synopsis,
         @URL String posterURL,
         Boolean isCustom,
-        List<Long> genresIds
+        List<Long> genreIds
 ) {
 }

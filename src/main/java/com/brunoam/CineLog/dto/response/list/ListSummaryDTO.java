@@ -4,7 +4,7 @@ import com.brunoam.CineLog.dto.response.user.UserResponseDTO;
 
 public record ListSummaryDTO(
         Long id,
-        String name,
+        String title,
         String description,
         boolean isPublic,
         UserResponseDTO user,
