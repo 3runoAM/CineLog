@@ -1,6 +1,7 @@
 package com.brunoam.CineLog.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,7 +18,8 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Size(min = 1, max = 250)
+    @NotBlank
+    @Size(max = 250)
     private String text;
 
     @ManyToOne

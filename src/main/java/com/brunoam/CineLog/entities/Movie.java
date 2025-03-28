@@ -1,6 +1,7 @@
 package com.brunoam.CineLog.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -23,13 +24,15 @@ public class Movie {
     @Column(unique = true)
     private Long tmdbId;
 
-    @Size(min = 1, max = 50)
+    @NotBlank
+    @Size(max = 50)
     private String title;
 
     @Positive
     private Integer releaseYear;
 
-    @Size(min = 1, max = 50)
+    @NotBlank
+    @Size(max = 50)
     private String director;
 
     @Size(min = 10, max = 5000)
