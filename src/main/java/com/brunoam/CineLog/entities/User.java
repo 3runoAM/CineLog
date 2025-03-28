@@ -44,6 +44,10 @@ public class User {
     @URL
     private String profileImageUrl;
 
+    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
+    @Enumerated(EnumType.STRING)
+    private Set<Role> roles;
+
     @OneToMany
     private List<Review> reviews;
 
@@ -59,7 +63,5 @@ public class User {
     @OneToMany
     private List<Notification> notifications;
 
-    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
-    @Enumerated(EnumType.STRING)
-    private Set<Role> roles;
+
 }
