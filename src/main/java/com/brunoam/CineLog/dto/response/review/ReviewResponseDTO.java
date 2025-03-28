@@ -1,7 +1,6 @@
 package com.brunoam.CineLog.dto.response.review;
 
 import com.brunoam.CineLog.dto.response.comment.CommentResponseDTO;
-import com.brunoam.CineLog.entities.Comment;
 import com.brunoam.CineLog.entities.Like;
 
 import java.time.LocalDate;
