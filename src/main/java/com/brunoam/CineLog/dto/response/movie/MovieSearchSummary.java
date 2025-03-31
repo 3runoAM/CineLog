@@ -10,7 +10,7 @@ import java.util.List;
 public record MovieSearchSummary(
         List<Movie> results,
         int page,
-        int total_results,
-        int total_pages
+        int totalResults,
+        int totalPages
 ) {
 }

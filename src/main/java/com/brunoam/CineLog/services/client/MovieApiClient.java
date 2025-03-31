@@ -25,7 +25,7 @@ public class MovieApiClient {
 
     public Mono<List<Movie>> searchMovies(String query) {
         return tmdbClient.get()
-                .uri("/search/movie?query=" + query)
+                .uri(uriBuilder -> uriBuilder.path("/search/movie").queryParam("query", query).build())
                 .retrieve()
                 .bodyToMono(MovieSearchSummary.class)
                 .map(MovieSearchSummary::results);
