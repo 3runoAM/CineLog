@@ -33,7 +33,6 @@ public class User extends AuditableEntity {
     private String email;
 
     @Column(nullable = false, columnDefinition = "CHAR(60)")
-    @Pattern(regexp = "^(https?://)?([\\\\da-z.-]+)\\\\.([a-z.]{2,6})[/\\\\w .-]*/?$")
     private String hashPassword;
 
     @NotBlank
@@ -52,5 +51,6 @@ public class User extends AuditableEntity {
     private String bio;
 
     @URL
+    @Pattern(regexp = "^(https?://)?([\\\\da-z.-]+)\\\\.([a-z.]{2,6})[/\\\\w .-]*/?$")
     private String profileUrl;
 }
