@@ -4,3 +4,5 @@ spring:
 tmdb:
   api:
     url: ${TMDB_API_URL}
+jwt:
+  secret: ${JWT_SECRET}
