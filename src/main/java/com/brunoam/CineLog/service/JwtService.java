@@ -21,10 +21,6 @@ public class JwtService {
     @Value("${jwt.secret}")
     String secretKey;
 
-    public JwtService() {
-        System.out.println("Construtor - secretKey: " + secretKey);
-    }
-
     @PostConstruct
     public void init() {
         System.out.println("PostConstruct - secretKey: " + secretKey);
