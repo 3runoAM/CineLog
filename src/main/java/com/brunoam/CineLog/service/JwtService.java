@@ -21,11 +21,6 @@ public class JwtService {
     @Value("${jwt.secret}")
     String secretKey;
 
-    @PostConstruct
-    public void init() {
-        System.out.println("PostConstruct - secretKey: " + secretKey);
-    }
-
     private SecretKey getSecretKey() {
         return Keys.hmacShaKeyFor(secretKey.getBytes());
     }
