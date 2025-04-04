@@ -15,15 +15,6 @@ public class UserDetailsImpl implements UserDetails {
     private final User user;
 
     /**
-     * Construtor que aceita um objeto User.
-     *
-     * @param user o objeto User a ser usado para fornecer os detalhes do usuário
-     */
-    public UserDetailsImpl(User user) {
-        this.user = user;
-    }
-
-    /**
      * Retorna as autoridades (permissões) concedidas ao usuário.
      *
      * @return uma coleção de GrantedAuthority que representam as permissões do usuário.

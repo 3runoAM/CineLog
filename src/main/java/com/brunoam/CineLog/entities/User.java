@@ -11,6 +11,7 @@ import lombok.*;
 import org.hibernate.annotations.UuidGenerator;
 import org.hibernate.validator.constraints.URL;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.UUID;
 
