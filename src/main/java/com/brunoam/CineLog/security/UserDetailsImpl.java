@@ -11,13 +11,8 @@ import java.util.stream.Collectors;
 
 
 @Builder
-/**
- * Implementação da interface UserDetails do Spring Security.
- * Esta classe é usada para fornecer os detalhes do usuário necessários para autenticação e autorização.
- */
 public class UserDetailsImpl implements UserDetails {
     private final User user;
-
 
     /**
      * Construtor que aceita um objeto User.

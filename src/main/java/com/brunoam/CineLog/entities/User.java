@@ -42,7 +42,7 @@ public class User extends AuditableEntity {
     @Size(max = 50)
     private String lastName;
 
-    @ElementCollection(targetClass = Role.class)
+    @ElementCollection(fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
 
