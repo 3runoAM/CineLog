@@ -11,6 +11,7 @@ import lombok.*;
 import org.hibernate.annotations.UuidGenerator;
 import org.hibernate.validator.constraints.URL;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.UUID;
 
@@ -42,7 +43,7 @@ public class User extends AuditableEntity {
     @Size(max = 50)
     private String lastName;
 
-    @ElementCollection(targetClass = Role.class)
+    @ElementCollection(fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
 
