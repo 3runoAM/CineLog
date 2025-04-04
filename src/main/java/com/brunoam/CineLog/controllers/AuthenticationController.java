@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashSet;
@@ -21,11 +22,13 @@ public class AuthenticationController {
     private final AuthenticationManager authenticationManager;
     private final UserRepository userRepository;
     private final JwtService tokenService;
+    private final PasswordEncoder passwordEncoder;
 
-    public AuthenticationController(AuthenticationManager authenticationManager, UserRepository userRepository, JwtService tokenService) {
+    public AuthenticationController(AuthenticationManager authenticationManager, UserRepository userRepository, JwtService tokenService, PasswordEncoder passwordEncoder) {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
         this.tokenService = tokenService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @PostMapping("/register")
@@ -34,7 +37,7 @@ public class AuthenticationController {
             return ResponseEntity.badRequest().build();
         }
 
-        String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
+        String encryptedPassword = passwordEncoder.encode(data.password());
 
         Set<Role> roles = new HashSet<>();
         roles.add(Role.ROLE_USER);
