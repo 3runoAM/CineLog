@@ -3,12 +3,12 @@ package com.brunoam.CineLog.service;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
-import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
+import java.util.Base64;
 import java.util.Date;
 import java.util.function.Function;
 
@@ -22,7 +22,7 @@ public class JwtService {
     String secretKey;
 
     private SecretKey getSecretKey() {
-        return Keys.hmacShaKeyFor(secretKey.getBytes());
+        return Keys.hmacShaKeyFor(Base64.getDecoder().decode(secretKey));
     }
 
     /**
@@ -44,7 +44,6 @@ public class JwtService {
      * Verifica se um token é válido para um determinado usuário.
      *
      * @param token token JWT a ser validado
-     * @param userDetails detalhes do usuário para validação
      * @return true se o token for válido, false caso contrário
      */
     public boolean isTokenValid(String token, UserDetails userDetails) {

@@ -1,8 +1,10 @@
 spring:
   profiles:
     active: dev
-tmdb:
   api:
     url: ${TMDB_API_URL}
+server:
+  servlet:
+    context-path: /api/v1
 jwt:
   secret: ${JWT_SECRET}
