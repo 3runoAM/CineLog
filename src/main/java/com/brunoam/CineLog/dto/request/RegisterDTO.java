@@ -1,4 +1,4 @@
-package com.brunoam.CineLog.entities.dto.request;
+package com.brunoam.CineLog.dto.request;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
