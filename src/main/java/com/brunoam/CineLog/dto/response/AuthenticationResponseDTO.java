@@ -1,4 +1,4 @@
-package com.brunoam.CineLog.entities.dto.response;
+package com.brunoam.CineLog.dto.response;
 
 import com.brunoam.CineLog.entities.User;
 

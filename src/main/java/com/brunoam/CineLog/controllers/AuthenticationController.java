@@ -1,13 +1,13 @@
 package com.brunoam.CineLog.controllers;
 
 import com.brunoam.CineLog.entities.User;
-import com.brunoam.CineLog.entities.dto.request.AuthenticationRequestDTO;
-import com.brunoam.CineLog.entities.dto.request.RegisterDTO;
-import com.brunoam.CineLog.entities.dto.response.AuthenticationResponseDTO;
+import com.brunoam.CineLog.dto.request.AuthenticationRequestDTO;
+import com.brunoam.CineLog.dto.request.RegisterDTO;
+import com.brunoam.CineLog.dto.response.AuthenticationResponseDTO;
 import com.brunoam.CineLog.enums.Role;
 import com.brunoam.CineLog.repositories.UserRepository;
 import com.brunoam.CineLog.service.JwtService;
-import com.brunoam.CineLog.entities.dto.response.UserResponseDTO;
+import com.brunoam.CineLog.dto.response.UserResponseDTO;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -35,34 +35,34 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthenticationResponseDTO> login(@RequestBody @Valid AuthenticationRequestDTO data){
-        var usernamePassword = new UsernamePasswordAuthenticationToken(data.email(), data.password());
+    public ResponseEntity<AuthenticationResponseDTO> login(@RequestBody @Valid AuthenticationRequestDTO userData){
+        var usernamePassword = new UsernamePasswordAuthenticationToken(userData.email(), userData.password());
         var auth = authenticationManager.authenticate(usernamePassword);
 
         var token = tokenService.generateToken((UserDetails) auth.getPrincipal());
-        var user = userRepository.findByEmail(data.email()).orElseThrow();
+        var user = userRepository.findByEmail(userData.email()).orElseThrow();
 
         return ResponseEntity.ok(AuthenticationResponseDTO.fromUserAndToken(user, token));
     }
 
     @PostMapping("/register")
-    public ResponseEntity<UserResponseDTO> register(@RequestBody @Valid RegisterDTO data) {
-        if (userRepository.findByEmail(data.email()).isPresent()) {
+    public ResponseEntity<UserResponseDTO> register(@RequestBody @Valid RegisterDTO userData) {
+        if (userRepository.findByEmail(userData.email()).isPresent()) {
             return ResponseEntity.badRequest().build();
         }
 
-        String encryptedPassword = passwordEncoder.encode(data.password());
+        String encryptedPassword = passwordEncoder.encode(userData.password());
 
         Set<Role> roles = new HashSet<>();
         roles.add(Role.ROLE_USER);
 
         User newUser = User.builder()
-                .email(data.email())
+                .email(userData.email())
                 .hashPassword(encryptedPassword)
-                .firstName(data.firstName())
-                .lastName(data.lastName())
-                .bio(data.bio())
-                .profileUrl(data.profileUrl())
+                .firstName(userData.firstName())
+                .lastName(userData.lastName())
+                .bio(userData.bio())
+                .profileUrl(userData.profileUrl())
                 .roles(roles)
                 .build();
 

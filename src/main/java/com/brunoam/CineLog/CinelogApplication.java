@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.RestController;
 @SpringBootApplication
 @RestController
 @RequestMapping("/main")
-public class CineLogApplication {
+public class CinelogApplication {
 	public static void main(String[] args) {
-		SpringApplication.run(CineLogApplication.class, args);
+		SpringApplication.run(CinelogApplication.class, args);
 	}
 
 	@GetMapping

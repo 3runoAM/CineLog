@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import com.brunoam.CineLog.entities.User;
 
-
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
     private final UserRepository userRepository;
