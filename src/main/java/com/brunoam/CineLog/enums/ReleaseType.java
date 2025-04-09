@@ -1,4 +1,4 @@
-package com.brunoam.CineLog.entities;
+package com.brunoam.CineLog.enums;
 
 public enum ReleaseType {
     THEATRICAL("Theatrical"),

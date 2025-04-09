@@ -1,4 +1,4 @@
-package com.brunoam.CineLog.entities.base;
+package com.brunoam.CineLog.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
