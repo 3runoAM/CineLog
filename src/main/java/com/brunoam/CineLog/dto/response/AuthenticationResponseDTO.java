@@ -15,7 +15,7 @@ public record AuthenticationResponseDTO(
                 authUser.getEmail(),
                 authUser.getFirstName(),
                 authUser.getLastName(),
-                authUser.getProfileUrl()
+                authUser.getUserProfile().getProfileImagePath()
         );
     }
 }

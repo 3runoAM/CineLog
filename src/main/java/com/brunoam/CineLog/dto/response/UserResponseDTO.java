@@ -24,8 +24,8 @@ public record UserResponseDTO(
                 authUser.getFirstName(),
                 authUser.getLastName(),
                 authUser.getRoles(),
-                authUser.getBio(),
-                authUser.getProfileUrl(),
+                authUser.getUserProfile().getBio(),
+                authUser.getUserProfile().getProfileImagePath(),
                 authUser.getCreatedAt()
         );
     }

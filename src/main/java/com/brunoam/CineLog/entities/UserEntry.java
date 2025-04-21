@@ -25,9 +25,9 @@ public class UserEntry extends AuditableEntity {
     @UuidGenerator(style = UuidGenerator.Style.RANDOM)
     private UUID id;
 
-    @NotNull
     @ManyToOne
-    private AuthUser authUser;
+    @JoinColumn(name = "user_id")
+    private UserProfile user;
 
     @NotNull
     @ManyToOne

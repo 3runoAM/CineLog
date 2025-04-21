@@ -54,22 +54,4 @@ public class UserDetailsImpl implements UserDetails {
     public String getFullName() {
         return authUser.getFirstName() + " " + authUser.getLastName();
     }
-
-    /**
-     * Retorna a bio do usuário.
-     *
-     * @return a bio do usuário
-     */
-    public String getBio() {
-        return authUser.getBio();
-    }
-
-    /**
-     * Retorna a uri da foto de perfil do usuário.
-     *
-     * @return a uri da foto de perfil do usuário
-     */
-    public String getProfileUrl() {
-        return authUser.getProfileUrl();
-    }
 }

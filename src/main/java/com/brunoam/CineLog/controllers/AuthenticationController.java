@@ -61,8 +61,6 @@ public class AuthenticationController {
                 .hashPassword(encryptedPassword)
                 .firstName(userData.firstName())
                 .lastName(userData.lastName())
-                .bio(userData.bio())
-                .profileUrl(userData.profileUrl())
                 .roles(roles)
                 .build();
 

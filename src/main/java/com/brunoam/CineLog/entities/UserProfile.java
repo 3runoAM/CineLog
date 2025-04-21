@@ -1,9 +1,7 @@
 package com.brunoam.CineLog.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,6 +22,10 @@ public class UserProfile extends AuditableEntity {
     @GeneratedValue(generator = "UUID")
     @UuidGenerator(style = UuidGenerator.Style.RANDOM)
     private UUID id;
+
+    @NotNull
+    @OneToOne
+    private AuthUser authUser;
 
     @Length(max = 100)
     @Column(length = 100)
