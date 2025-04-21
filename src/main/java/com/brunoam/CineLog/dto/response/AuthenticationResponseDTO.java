@@ -1,6 +1,6 @@
 package com.brunoam.CineLog.dto.response;
 
-import com.brunoam.CineLog.entities.User;
+import com.brunoam.CineLog.entities.AuthUser;
 
 public record AuthenticationResponseDTO(
         String token,
@@ -9,13 +9,13 @@ public record AuthenticationResponseDTO(
         String lastName,
         String profileUrl
 ) {
-    public static AuthenticationResponseDTO fromUserAndToken(User user, String token) {
+    public static AuthenticationResponseDTO fromUserAndToken(AuthUser authUser, String token) {
         return new AuthenticationResponseDTO(
                 token,
-                user.getEmail(),
-                user.getFirstName(),
-                user.getLastName(),
-                user.getProfileUrl()
+                authUser.getEmail(),
+                authUser.getFirstName(),
+                authUser.getLastName(),
+                authUser.getProfileUrl()
         );
     }
 }

@@ -8,7 +8,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.brunoam.CineLog.entities.User;
+import com.brunoam.CineLog.entities.AuthUser;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -21,11 +21,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(email)
+        AuthUser authUser = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
 
         return UserDetailsImpl.builder()
-                .user(user)
+                .authUser(authUser)
                 .build();
     }
 }

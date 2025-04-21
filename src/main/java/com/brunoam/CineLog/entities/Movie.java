@@ -8,6 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.UuidGenerator;
 import org.hibernate.validator.constraints.URL;
 
@@ -73,7 +75,7 @@ public class Movie extends AuditableEntity {
     private Set<@Valid Genre> genres;
 
     @OneToMany
-    private List<@Valid Review> reviews;
+    private List<@Valid UserEntry> userEntriesList;
 
     @ManyToMany
     @JoinTable(name = "movie_director",
