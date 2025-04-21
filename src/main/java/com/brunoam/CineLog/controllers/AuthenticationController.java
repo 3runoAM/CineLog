@@ -1,6 +1,6 @@
 package com.brunoam.CineLog.controllers;
 
-import com.brunoam.CineLog.entities.User;
+import com.brunoam.CineLog.entities.AuthUser;
 import com.brunoam.CineLog.dto.request.AuthenticationRequestDTO;
 import com.brunoam.CineLog.dto.request.RegisterDTO;
 import com.brunoam.CineLog.dto.response.AuthenticationResponseDTO;
@@ -56,18 +56,16 @@ public class AuthenticationController {
         Set<Role> roles = new HashSet<>();
         roles.add(Role.ROLE_USER);
 
-        User newUser = User.builder()
+        AuthUser newAuthUser = AuthUser.builder()
                 .email(userData.email())
                 .hashPassword(encryptedPassword)
                 .firstName(userData.firstName())
                 .lastName(userData.lastName())
-                .bio(userData.bio())
-                .profileUrl(userData.profileUrl())
                 .roles(roles)
                 .build();
 
-        User savedUser = userRepository.save(newUser);
+        AuthUser savedAuthUser = userRepository.save(newAuthUser);
 
-        return ResponseEntity.ok(UserResponseDTO.fromEntity(savedUser));
+        return ResponseEntity.ok(UserResponseDTO.fromEntity(savedAuthUser));
     }
 }

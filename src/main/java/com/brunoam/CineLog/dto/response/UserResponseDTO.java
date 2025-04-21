@@ -1,6 +1,6 @@
 package com.brunoam.CineLog.dto.response;
 
-import com.brunoam.CineLog.entities.User;
+import com.brunoam.CineLog.entities.AuthUser;
 import com.brunoam.CineLog.enums.Role;
 
 import java.time.LocalDateTime;
@@ -17,16 +17,16 @@ public record UserResponseDTO(
         String profileUrl,
         LocalDateTime createdAt
 ) {
-    public static UserResponseDTO fromEntity(User user) {
+    public static UserResponseDTO fromEntity(AuthUser authUser) {
         return new UserResponseDTO(
-                user.getId(),
-                user.getEmail(),
-                user.getFirstName(),
-                user.getLastName(),
-                user.getRoles(),
-                user.getBio(),
-                user.getProfileUrl(),
-                user.getCreatedAt()
+                authUser.getId(),
+                authUser.getEmail(),
+                authUser.getFirstName(),
+                authUser.getLastName(),
+                authUser.getRoles(),
+                authUser.getUserProfile().getBio(),
+                authUser.getUserProfile().getProfileImagePath(),
+                authUser.getCreatedAt()
         );
     }
 }

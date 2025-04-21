@@ -1,6 +1,5 @@
 package com.brunoam.CineLog.entities;
 
-import com.brunoam.CineLog.entities.base.AuditableEntity;
 import com.brunoam.CineLog.enums.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -9,7 +8,6 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import org.hibernate.annotations.UuidGenerator;
-import org.hibernate.validator.constraints.URL;
 
 import java.util.Set;
 import java.util.UUID;
@@ -20,7 +18,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "users")
-public class User extends AuditableEntity {
+public class AuthUser extends AuditableEntity {
     @Id
     @GeneratedValue(generator = "UUID")
     @UuidGenerator(style = UuidGenerator.Style.RANDOM)
@@ -46,9 +44,6 @@ public class User extends AuditableEntity {
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
 
-    @Size(max = 50)
-    private String bio;
-
-    @URL
-    private String profileUrl;
+    @OneToOne(mappedBy = "authUser", cascade = CascadeType.ALL)
+    private UserProfile userProfile;
 }

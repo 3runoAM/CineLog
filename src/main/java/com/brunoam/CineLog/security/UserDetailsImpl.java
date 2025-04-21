@@ -1,6 +1,6 @@
 package com.brunoam.CineLog.security;
 
-import com.brunoam.CineLog.entities.User;
+import com.brunoam.CineLog.entities.AuthUser;
 import lombok.Builder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 @Builder
 public class UserDetailsImpl implements UserDetails {
-    private final User user;
+    private final AuthUser authUser;
 
     /**
      * Retorna as autoridades (permissões) concedidas ao usuário.
@@ -21,7 +21,7 @@ public class UserDetailsImpl implements UserDetails {
      */
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return user.getRoles().stream()
+        return authUser.getRoles().stream()
                 .map(role -> new SimpleGrantedAuthority(role.name()))
                 .collect(Collectors.toSet());
     }
@@ -33,7 +33,7 @@ public class UserDetailsImpl implements UserDetails {
      */
     @Override
     public String getPassword() {
-        return user.getHashPassword();
+        return authUser.getHashPassword();
     }
 
     /**
@@ -43,7 +43,7 @@ public class UserDetailsImpl implements UserDetails {
      */
     @Override
     public String getUsername() {
-        return user.getEmail();
+        return authUser.getEmail();
     }
 
     /**
@@ -52,24 +52,6 @@ public class UserDetailsImpl implements UserDetails {
     * @return o nome completo do usuário
     */
     public String getFullName() {
-        return user.getFirstName() + " " + user.getLastName();
-    }
-
-    /**
-     * Retorna a bio do usuário.
-     *
-     * @return a bio do usuário
-     */
-    public String getBio() {
-        return user.getBio();
-    }
-
-    /**
-     * Retorna a uri da foto de perfil do usuário.
-     *
-     * @return a uri da foto de perfil do usuário
-     */
-    public String getProfileUrl() {
-        return user.getProfileUrl();
+        return authUser.getFirstName() + " " + authUser.getLastName();
     }
 }
