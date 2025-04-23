@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 
+import java.nio.file.Paths;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -46,7 +47,7 @@ public class UserProfileService {
 
         String safeFilename = this.generateSafeFilename(file.getOriginalFilename());
 
-        File destinationFile = new File(uploadPath + safeFilename);
+        File destinationFile = Paths.get(uploadPath, safeFilename).toFile();
 
         file.transferTo(destinationFile);
         return destinationFile.toString();
