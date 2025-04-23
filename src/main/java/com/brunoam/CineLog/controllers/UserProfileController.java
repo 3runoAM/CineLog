@@ -3,12 +3,11 @@ package com.brunoam.CineLog.controllers;
 import com.brunoam.CineLog.entities.UserProfile;
 import com.brunoam.CineLog.exceptions.InvalidImageException;
 import com.brunoam.CineLog.service.UserProfileService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.BufferedWriter;
 import java.io.IOException;
 
 @RestController
@@ -20,15 +19,21 @@ public class UserProfileController {
         this.userProfileService = userProfileService;
     }
 
-    @PostMapping("/new")
+    @PatchMapping("/update")
     public void updateProfile(MultipartFile file, String bio) throws IOException, InvalidImageException {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserProfile userProfile = userProfileService.findByEmail(authentication.getName())
+                .orElseThrow(() -> new IllegalArgumentException("Perfil não encontrado para o email: " + authentication.getName()));
+
         String imagePath = userProfileService.saveProfileImage(file);
 
-        UserProfile userProfile = UserProfile.builder()
-                .profileImagePath(imagePath)
+        UserProfile updatedUserProfile = UserProfile.builder()
+                .id(userProfile.getId())
+                .authUser(userProfile.getAuthUser())
                 .bio(bio)
+                .profileImagePath(imagePath)
                 .build();
 
-        userProfileService.saveUserProfile(userProfile);
+        userProfileService.saveUserProfile(updatedUserProfile);
     }
 }

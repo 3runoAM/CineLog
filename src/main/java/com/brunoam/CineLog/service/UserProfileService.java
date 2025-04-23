@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -30,6 +31,10 @@ public class UserProfileService {
         userProfileRepository.save(userProfile);
     }
 
+    public Optional<UserProfile> findByEmail(String email) {
+        return userProfileRepository.findByAuthUser_Email(email);
+    }
+
     /**
      * Valida e salva a imagem de perfil do usuário no servidor.
      *
@@ -39,9 +44,9 @@ public class UserProfileService {
     public String saveProfileImage(MultipartFile file) throws IOException, InvalidImageException {
         profilePicValidator.validate(file);
 
-        String filesNewName = this.generateSafeFilename(file.getOriginalFilename());
+        String safeFilename = this.generateSafeFilename(file.getOriginalFilename());
 
-        File destinationFile = new File(uploadPath + filesNewName);
+        File destinationFile = new File(uploadPath + safeFilename);
 
         file.transferTo(destinationFile);
         return destinationFile.toString();
