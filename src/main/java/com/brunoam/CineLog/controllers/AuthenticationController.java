@@ -4,10 +4,13 @@ import com.brunoam.CineLog.entities.AuthUser;
 import com.brunoam.CineLog.dto.request.AuthenticationRequestDTO;
 import com.brunoam.CineLog.dto.request.RegisterDTO;
 import com.brunoam.CineLog.dto.response.AuthenticationResponseDTO;
+import com.brunoam.CineLog.entities.UserProfile;
 import com.brunoam.CineLog.enums.Role;
+import com.brunoam.CineLog.repositories.UserProfileRepository;
 import com.brunoam.CineLog.repositories.UserRepository;
 import com.brunoam.CineLog.service.JwtService;
 import com.brunoam.CineLog.dto.response.UserResponseDTO;
+import com.brunoam.CineLog.service.UserProfileService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -24,12 +27,14 @@ import java.util.Set;
 public class AuthenticationController {
     private final AuthenticationManager authenticationManager;
     private final UserRepository userRepository;
+    private final UserProfileRepository userProfileRepository;
     private final JwtService tokenService;
     private final PasswordEncoder passwordEncoder;
 
-    public AuthenticationController(AuthenticationManager authenticationManager, UserRepository userRepository, JwtService tokenService, PasswordEncoder passwordEncoder) {
+    public AuthenticationController(AuthenticationManager authenticationManager, UserRepository userRepository, UserProfileRepository userProfileRepository, JwtService tokenService, PasswordEncoder passwordEncoder) {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
+        this.userProfileRepository = userProfileRepository;
         this.tokenService = tokenService;
         this.passwordEncoder = passwordEncoder;
     }
@@ -51,10 +56,13 @@ public class AuthenticationController {
             return ResponseEntity.badRequest().build();
         }
 
+
         String encryptedPassword = passwordEncoder.encode(userData.password());
+
 
         Set<Role> roles = new HashSet<>();
         roles.add(Role.ROLE_USER);
+
 
         AuthUser newAuthUser = AuthUser.builder()
                 .email(userData.email())
@@ -63,8 +71,13 @@ public class AuthenticationController {
                 .lastName(userData.lastName())
                 .roles(roles)
                 .build();
-
         AuthUser savedAuthUser = userRepository.save(newAuthUser);
+
+
+        UserProfile newUserProfile = UserProfile.builder()
+                .authUser(savedAuthUser)
+                .build();
+        userProfileRepository.save(newUserProfile);
 
         return ResponseEntity.ok(UserResponseDTO.fromEntity(savedAuthUser));
     }
