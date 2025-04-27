@@ -1,4 +1,4 @@
-package com.brunoam.CineLog.service;
+package com.brunoam.CineLog.services;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

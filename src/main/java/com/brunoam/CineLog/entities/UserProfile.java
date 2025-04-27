@@ -13,7 +13,7 @@ import org.hibernate.validator.constraints.URL;
 import java.util.UUID;
 
 @Entity
-@Builder
+@Builder(toBuilder = true)
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
@@ -31,6 +31,5 @@ public class UserProfile extends AuditableEntity {
     @Column(length = 100)
     private String bio;
 
-    @URL
     private String profileImagePath;
 }
