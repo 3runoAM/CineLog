@@ -1,4 +1,4 @@
-package com.brunoam.CineLog.service;
+package com.brunoam.CineLog.services;
 
 import com.brunoam.CineLog.repositories.UserRepository;
 import com.brunoam.CineLog.security.UserDetailsImpl;

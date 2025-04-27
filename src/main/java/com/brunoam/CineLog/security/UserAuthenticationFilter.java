@@ -1,7 +1,7 @@
 package com.brunoam.CineLog.security;
 
 import com.brunoam.CineLog.repositories.UserRepository;
-import com.brunoam.CineLog.service.JwtService;
+import com.brunoam.CineLog.services.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
