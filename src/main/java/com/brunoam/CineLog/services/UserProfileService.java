@@ -28,7 +28,9 @@ public class UserProfileService {
 
     @Transactional
     public UpdateProfileResponseDTO updateUserProfile(String email, UpdateProfileRequestDTO userProfileDTO) throws IOException {
-        if (userProfileDTO.bio() != null && userProfileDTO.bio().isEmpty()) return null;
+        if (userProfileDTO.bio() == null && (userProfileDTO.profileImage() == null || userProfileDTO.profileImage().isEmpty())) {
+            throw new IllegalArgumentException("Nenhum dado para atualizar");
+        }
 
         UserProfile userProfile = userProfileRepository.findByAuthUser_Email(email)
                 .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado"));
