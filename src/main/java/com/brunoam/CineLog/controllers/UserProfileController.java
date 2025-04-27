@@ -1,9 +1,10 @@
 package com.brunoam.CineLog.controllers;
 
-import com.brunoam.CineLog.dto.request.UpdateUserProfileDTO;
-import com.brunoam.CineLog.exceptions.InvalidImageException;
+import com.brunoam.CineLog.dto.request.UpdateProfileRequestDTO;
+import com.brunoam.CineLog.dto.response.UpdateProfileResponseDTO;
 import com.brunoam.CineLog.services.UserProfileService;
 import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -20,10 +21,11 @@ public class UserProfileController {
     }
 
     @PatchMapping("/update")
-    public void updateProfile(@Valid @ModelAttribute UpdateUserProfileDTO updateRequest) throws IOException, InvalidImageException {
+    public ResponseEntity<UpdateProfileResponseDTO> updateProfile(@Valid @ModelAttribute UpdateProfileRequestDTO updateRequest) throws IOException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
 
-        userProfileService.updateUserProfile(email, updateRequest);
+        UpdateProfileResponseDTO response = userProfileService.updateUserProfile(email, updateRequest);
+        return ResponseEntity.ok(response);
     }
 }

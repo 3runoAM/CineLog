@@ -1,8 +1,8 @@
 package com.brunoam.CineLog.services;
 
-import com.brunoam.CineLog.dto.request.UpdateUserProfileDTO;
+import com.brunoam.CineLog.dto.request.UpdateProfileRequestDTO;
+import com.brunoam.CineLog.dto.response.UpdateProfileResponseDTO;
 import com.brunoam.CineLog.entities.UserProfile;
-import com.brunoam.CineLog.exceptions.InvalidImageException;
 import com.brunoam.CineLog.repositories.UserProfileRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,17 +27,15 @@ public class UserProfileService {
     }
 
     @Transactional
-    public void updateUserProfile(String email, UpdateUserProfileDTO userProfileDTO) throws IOException, InvalidImageException {
-        if (userProfileDTO.bio() != null && userProfileDTO.bio().isEmpty()) return;
+    public UpdateProfileResponseDTO updateUserProfile(String email, UpdateProfileRequestDTO userProfileDTO) throws IOException {
+        if (userProfileDTO.bio() != null && userProfileDTO.bio().isEmpty()) return null;
 
         UserProfile userProfile = userProfileRepository.findByAuthUser_Email(email)
                 .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado"));
 
-
         UserProfile.UserProfileBuilder updatedUserProfileBuilder = userProfile.toBuilder();
 
         if (userProfileDTO.bio() != null) updatedUserProfileBuilder.bio(userProfileDTO.bio());
-
         if (userProfileDTO.profileImage() != null && !userProfileDTO.profileImage().isEmpty()) {
             this.deleteExistingProfileImage(userProfile.getProfileImagePath());
 
@@ -47,6 +45,8 @@ public class UserProfileService {
 
         UserProfile updatedUserProfile = updatedUserProfileBuilder.build();
         userProfileRepository.save(updatedUserProfile);
+
+        return new UpdateProfileResponseDTO(updatedUserProfile.getBio(), updatedUserProfile.getProfileImagePath());
     }
 
     private void deleteExistingProfileImage(String imagePath) {

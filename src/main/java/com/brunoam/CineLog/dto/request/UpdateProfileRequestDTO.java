@@ -5,7 +5,7 @@ import jakarta.persistence.Column;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.web.multipart.MultipartFile;
 
-public record UpdateUserProfileDTO(
+public record UpdateProfileRequestDTO(
         @Length(max = 100) @Column(length = 100) String bio,
         @ValidProfileImage MultipartFile profileImage
 ) {
