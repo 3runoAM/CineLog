@@ -1,3 +1,8 @@
+<style>
+.status-feito { color: green; }
+.status-adiado { color: orange; }
+.status-progresso { color: blue; }
+</style>
 # CineLog API (Letterboxd clone)
 
 Bem-vindo ao repositório da **CineLog API**, uma plataforma social para entusiastas de cinema! Esta API permite que usuários registrem filmes assistidos, escrevam resenhas, criem listas temáticas, sigma outros usuários e descubram novos films... Tudo isso com integração à **TMDB API** para obter dados completos sobre filmes.
@@ -32,8 +37,22 @@ Bem-vindo ao repositório da **CineLog API**, uma plataforma social para entusia
 Este projeto está licenciado sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
 
 ## Status do Projeto
-W.I.P. 💻
 
+### Requisitos Funcionais concluídos ou em progresso
+- RF1: Cadastro de usuário com e-mail único, nome, senha. <b class="status-feito">[FEITO]</b>
+- RF2: Login via
+  - e-mail/senha <b class="status-feito">[FEITO]</b>
+  - OAuth2 (Google). <b class="status-adiado">[ADIADO]</b>
+- RF3: Perfil de usuário com:
+  - Biografia. <b class="status-feito">[FEITO]</b>
+  - Estatísticas: <b class="status-progresso">[EM PROGRESSO]</b>
+    - Filmes assistidos; <b class="status-feito">[FEITO]</b>
+    - Resenhas publicadas; <b class="status-feito">[FEITO]</b>
+    - Seguidores. <b class="status-progresso">[EM PROGRESSO]</b>
+  - Foto de perfil (upload via arquivo): <b class="status-feito">[FEITO]</b>
+    - JPEG ou PNG;
+    - Limite de 2MB;
+    - 4096x4096 pixels.
 ---
 
 Desenvolvido por Bruno Martins (@3runoAM) ☕
