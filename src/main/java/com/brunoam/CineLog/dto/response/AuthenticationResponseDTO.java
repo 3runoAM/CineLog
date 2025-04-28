@@ -8,14 +8,4 @@ public record AuthenticationResponseDTO(
         String firstName,
         String lastName,
         String profileUrl
-) {
-    public static AuthenticationResponseDTO fromUserAndToken(AuthUser authUser, String token) {
-        return new AuthenticationResponseDTO(
-                token,
-                authUser.getEmail(),
-                authUser.getFirstName(),
-                authUser.getLastName(),
-                authUser.getUserProfile().getProfileImagePath()
-        );
-    }
-}
+) { }

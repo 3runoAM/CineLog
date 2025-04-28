@@ -10,10 +10,12 @@ import com.brunoam.CineLog.repositories.UserProfileRepository;
 import com.brunoam.CineLog.repositories.UserRepository;
 import com.brunoam.CineLog.services.JwtService;
 import com.brunoam.CineLog.dto.response.UserResponseDTO;
+import com.brunoam.CineLog.services.UserRegistrationService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -24,60 +26,45 @@ import java.util.Set;
 @RestController
 @RequestMapping("auth")
 public class AuthenticationController {
-    private final AuthenticationManager authenticationManager;
-    private final UserRepository userRepository;
-    private final UserProfileRepository userProfileRepository;
     private final JwtService tokenService;
-    private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
+    private final UserRegistrationService userRegistrationService;
 
-    public AuthenticationController(AuthenticationManager authenticationManager, UserRepository userRepository, UserProfileRepository userProfileRepository, JwtService tokenService, PasswordEncoder passwordEncoder) {
+    public AuthenticationController(JwtService tokenService,
+                                    AuthenticationManager authenticationManager,
+                                    UserRegistrationService userRegistrationService) {
         this.authenticationManager = authenticationManager;
-        this.userRepository = userRepository;
-        this.userProfileRepository = userProfileRepository;
         this.tokenService = tokenService;
-        this.passwordEncoder = passwordEncoder;
+        this.userRegistrationService = userRegistrationService;
     }
 
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponseDTO> login(@RequestBody @Valid AuthenticationRequestDTO userData){
-        var usernamePassword = new UsernamePasswordAuthenticationToken(userData.email(), userData.password());
-        var auth = authenticationManager.authenticate(usernamePassword);
+        UsernamePasswordAuthenticationToken usernamePassword = new UsernamePasswordAuthenticationToken(userData.email(), userData.password());
+        Authentication auth = authenticationManager.authenticate(usernamePassword);
 
-        var token = tokenService.generateToken((UserDetails) auth.getPrincipal());
-        var user = userRepository.findByEmail(userData.email()).orElseThrow();
+        String token = tokenService.generateToken((UserDetails) auth.getPrincipal());
+        AuthUser user = userRegistrationService.findByEmail(userData.email());
 
-        return ResponseEntity.ok(AuthenticationResponseDTO.fromUserAndToken(user, token));
+        return ResponseEntity.ok(new AuthenticationResponseDTO(token,
+                user.getEmail(), user.getFirstName(), user.getLastName(), user.getUserProfile().getProfileImagePath()));
     }
 
     @PostMapping("/register")
     public ResponseEntity<UserResponseDTO> register(@RequestBody @Valid RegisterDTO userData) {
-        if (userRepository.findByEmail(userData.email()).isPresent()) {
-            return ResponseEntity.badRequest().build();
-        }
+        if (userRegistrationService.existsByEmail(userData.email())) return ResponseEntity.badRequest().build();
 
+        AuthUser savedAuthUser = userRegistrationService.registerUser(userData);
+        UserProfile savedUserProfile = userRegistrationService.registerUserProfile(savedAuthUser);
 
-        String encryptedPassword = passwordEncoder.encode(userData.password());
-
-
-        Set<Role> roles = new HashSet<>();
-        roles.add(Role.ROLE_USER);
-
-
-        AuthUser newAuthUser = AuthUser.builder()
-                .email(userData.email())
-                .hashPassword(encryptedPassword)
-                .firstName(userData.firstName())
-                .lastName(userData.lastName())
-                .roles(roles)
-                .build();
-        AuthUser savedAuthUser = userRepository.save(newAuthUser);
-
-
-        UserProfile newUserProfile = UserProfile.builder()
-                .authUser(savedAuthUser)
-                .build();
-        userProfileRepository.save(newUserProfile);
-
-        return ResponseEntity.ok(UserResponseDTO.fromEntity(savedAuthUser));
+        return ResponseEntity.ok(new UserResponseDTO(
+                savedAuthUser.getId(),
+                savedAuthUser.getEmail(),
+                savedAuthUser.getFirstName(),
+                savedAuthUser.getLastName(),
+                savedAuthUser.getRoles(),
+                savedUserProfile.getBio(),
+                savedUserProfile.getProfileImagePath(),
+                savedAuthUser.getCreatedAt()));
     }
 }

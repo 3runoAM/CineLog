@@ -16,17 +16,4 @@ public record UserResponseDTO(
         String bio,
         String profileUrl,
         LocalDateTime createdAt
-) {
-    public static UserResponseDTO fromEntity(AuthUser authUser) {
-        return new UserResponseDTO(
-                authUser.getId(),
-                authUser.getEmail(),
-                authUser.getFirstName(),
-                authUser.getLastName(),
-                authUser.getRoles(),
-                authUser.getUserProfile().getBio(),
-                authUser.getUserProfile().getProfileImagePath(),
-                authUser.getCreatedAt()
-        );
-    }
-}
+) { }
