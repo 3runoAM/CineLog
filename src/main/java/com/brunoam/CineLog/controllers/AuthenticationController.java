@@ -5,9 +5,6 @@ import com.brunoam.CineLog.dto.request.AuthenticationRequestDTO;
 import com.brunoam.CineLog.dto.request.RegisterDTO;
 import com.brunoam.CineLog.dto.response.AuthenticationResponseDTO;
 import com.brunoam.CineLog.entities.UserProfile;
-import com.brunoam.CineLog.enums.Role;
-import com.brunoam.CineLog.repositories.UserProfileRepository;
-import com.brunoam.CineLog.repositories.UserRepository;
 import com.brunoam.CineLog.services.JwtService;
 import com.brunoam.CineLog.dto.response.UserResponseDTO;
 import com.brunoam.CineLog.services.UserRegistrationService;
@@ -17,11 +14,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashSet;
-import java.util.Set;
 
 @RestController
 @RequestMapping("auth")
@@ -46,8 +40,7 @@ public class AuthenticationController {
         String token = tokenService.generateToken((UserDetails) auth.getPrincipal());
         AuthUser user = userRegistrationService.findByEmail(userData.email());
 
-        return ResponseEntity.ok(new AuthenticationResponseDTO(token,
-                user.getEmail(), user.getFirstName(), user.getLastName(), user.getUserProfile().getProfileImagePath()));
+        return ResponseEntity.ok(AuthenticationResponseDTO.from(token, user));
     }
 
     @PostMapping("/register")
@@ -57,14 +50,6 @@ public class AuthenticationController {
         AuthUser savedAuthUser = userRegistrationService.registerUser(userData);
         UserProfile savedUserProfile = userRegistrationService.registerUserProfile(savedAuthUser);
 
-        return ResponseEntity.ok(new UserResponseDTO(
-                savedAuthUser.getId(),
-                savedAuthUser.getEmail(),
-                savedAuthUser.getFirstName(),
-                savedAuthUser.getLastName(),
-                savedAuthUser.getRoles(),
-                savedUserProfile.getBio(),
-                savedUserProfile.getProfileImagePath(),
-                savedAuthUser.getCreatedAt()));
+        return ResponseEntity.ok(UserResponseDTO.from(savedAuthUser, savedUserProfile));
     }
 }

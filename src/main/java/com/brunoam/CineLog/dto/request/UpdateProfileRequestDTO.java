@@ -8,14 +8,4 @@ import org.springframework.web.multipart.MultipartFile;
 public record UpdateProfileRequestDTO(
         @Length(max = 100) @Column(length = 100) String bio,
         @ValidProfileImage MultipartFile profileImage
-) {
-    @Override
-    public String bio() {
-        return bio;
-    }
-
-    @Override
-    public MultipartFile profileImage() {
-        return profileImage;
-    }
-}
+) { }
