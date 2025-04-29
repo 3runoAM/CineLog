@@ -1,6 +1,6 @@
 package com.brunoam.CineLog.services;
 
-import com.brunoam.CineLog.repositories.UserRepository;
+import com.brunoam.CineLog.repositories.AuthUserRepository;
 import com.brunoam.CineLog.security.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,10 +12,10 @@ import com.brunoam.CineLog.entities.AuthUser;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
-    private final UserRepository userRepository;
+    private final AuthUserRepository userRepository;
 
     @Autowired
-    public UserDetailsServiceImpl(UserRepository userRepository) {
+    public UserDetailsServiceImpl(AuthUserRepository userRepository) {
         this.userRepository = userRepository;
     }
 

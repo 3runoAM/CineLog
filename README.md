@@ -40,7 +40,7 @@ Este projeto está licenciado sob a licença MIT. Veja o arquivo [LICENSE](LICEN
 
 ### Requisitos Funcionais concluídos ou em progresso
 - RF1: Cadastro de usuário com e-mail único, nome, senha. <b class="status-feito">[FEITO]</b>
-- RF2: Login via
+- RF2: Login via:
   - e-mail/senha <b class="status-feito">[FEITO]</b>
   - OAuth2 (Google). <b class="status-adiado">[ADIADO]</b>
 - RF3: Perfil de usuário com:

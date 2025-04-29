@@ -5,7 +5,7 @@ import com.brunoam.CineLog.entities.AuthUser;
 import com.brunoam.CineLog.entities.UserProfile;
 import com.brunoam.CineLog.enums.Role;
 import com.brunoam.CineLog.repositories.UserProfileRepository;
-import com.brunoam.CineLog.repositories.UserRepository;
+import com.brunoam.CineLog.repositories.AuthUserRepository;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -15,11 +15,11 @@ import java.util.Set;
 
 @Service
 public class UserRegistrationService {
-    private final UserRepository userRepository;
+    private final AuthUserRepository userRepository;
     private final UserProfileRepository userProfileRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public UserRegistrationService(UserRepository userRepository, UserProfileRepository userProfileRepository, PasswordEncoder passwordEncoder) {
+    public UserRegistrationService(AuthUserRepository userRepository, UserProfileRepository userProfileRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.userProfileRepository = userProfileRepository;
         this.passwordEncoder = passwordEncoder;

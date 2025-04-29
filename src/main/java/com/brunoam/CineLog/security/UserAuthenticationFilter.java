@@ -1,6 +1,6 @@
 package com.brunoam.CineLog.security;
 
-import com.brunoam.CineLog.repositories.UserRepository;
+import com.brunoam.CineLog.repositories.AuthUserRepository;
 import com.brunoam.CineLog.services.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -19,10 +19,10 @@ import java.io.IOException;
 public class UserAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtTokenService;
-    private final UserRepository userRepository;
+    private final AuthUserRepository userRepository;
 
     @Autowired
-    public UserAuthenticationFilter(JwtService jwtTokenService, UserRepository userRepository) {
+    public UserAuthenticationFilter(JwtService jwtTokenService, AuthUserRepository userRepository) {
         this.jwtTokenService = jwtTokenService;
         this.userRepository = userRepository;
     }

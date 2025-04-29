@@ -38,6 +38,7 @@ public class UserProfileService {
         UserProfile.UserProfileBuilder updatedUserProfileBuilder = userProfile.toBuilder();
 
         if (userProfileDTO.bio() != null) updatedUserProfileBuilder.bio(userProfileDTO.bio());
+
         if (userProfileDTO.profileImage() != null && !userProfileDTO.profileImage().isEmpty()) {
             this.deleteExistingProfileImage(userProfile.getProfileImagePath());
 
@@ -62,7 +63,7 @@ public class UserProfileService {
         }
     }
 
-    public String saveProfileImage(MultipartFile file) throws IOException {
+    private String saveProfileImage(MultipartFile file) throws IOException {
         String safeFilename = this.generateSafeFilename(file.getOriginalFilename());
 
         File destinationFile = Paths.get(uploadPath, safeFilename).toFile();
@@ -71,7 +72,7 @@ public class UserProfileService {
         return destinationFile.toString();
     }
 
-    public String generateSafeFilename(String originalFilename) {
+    private String generateSafeFilename(String originalFilename) {
         String extension = "";
         if (originalFilename != null && originalFilename.contains(".")) {
             extension = originalFilename.substring(originalFilename.lastIndexOf('.'));
