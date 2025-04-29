@@ -25,13 +25,6 @@ Bem-vindo ao repositório da **CineLog API**, uma plataforma social para entusia
 - **APIs**: RESTful API com documentação Swagger/OpenAPI.
 - **Testes**: Unitários (JUnit/Mockito) e de integração (Testcontainers).
 
-## Requisitos Não Funcionais ⚙️
-
-- **Desempenho**: Tempo de resposta médio < 500ms para 90% das requisições.
-- **Segurança**: Senhas armazenadas com BCrypt, HTTPS obrigatório e proteção contra SQL Injection e XSS.
-- **Escalabilidade**: Projetada para escalar horizontalmente com Redis.
-- **Confiabilidade**: Backup diário do banco de dados e monitoramento com Prometheus/Grafana.
-
 ## Licença 📄
 
 Este projeto está licenciado sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
