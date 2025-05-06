@@ -12,7 +12,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(500).body(e.getMessage());
     }
 
-    @ExceptionHandler
+    @ExceptionHandler(UserProfileNotFound.class)
     public ResponseEntity<String> handleUserProfileNotFound(UserProfileNotFound e){
         return ResponseEntity.status(404).body(e.getMessage());
     }
