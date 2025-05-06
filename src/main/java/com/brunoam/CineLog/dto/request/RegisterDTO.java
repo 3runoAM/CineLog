@@ -11,5 +11,5 @@ public record RegisterDTO(
         @NotBlank @Size(max = 50)String firstName,
         @NotBlank @Size(max = 50) String lastName,
         @Size(max = 50) String bio,
-        @URL String profileUrl) {
-}
+        @URL String profileUrl
+) { }

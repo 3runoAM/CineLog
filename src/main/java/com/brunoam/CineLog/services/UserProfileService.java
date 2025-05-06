@@ -3,6 +3,8 @@ package com.brunoam.CineLog.services;
 import com.brunoam.CineLog.dto.request.UpdateProfileRequestDTO;
 import com.brunoam.CineLog.dto.response.UpdateProfileResponseDTO;
 import com.brunoam.CineLog.entities.UserProfile;
+import com.brunoam.CineLog.exceptions.ImageDeletionException;
+import com.brunoam.CineLog.exceptions.UserProfileNotFound;
 import com.brunoam.CineLog.repositories.UserProfileRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,13 +29,13 @@ public class UserProfileService {
     }
 
     @Transactional
-    public UpdateProfileResponseDTO updateUserProfile(String email, UpdateProfileRequestDTO userProfileDTO) throws IOException {
+    public UpdateProfileResponseDTO updateUserProfile(String username, UpdateProfileRequestDTO userProfileDTO) throws IOException {
         if (userProfileDTO.bio() == null && (userProfileDTO.profileImage() == null || userProfileDTO.profileImage().isEmpty())) {
             throw new IllegalArgumentException("Nenhum dado para atualizar");
         }
 
-        UserProfile userProfile = userProfileRepository.findByAuthUser_Email(email)
-                .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado"));
+        UserProfile userProfile = userProfileRepository.findByAuthUser_Email(username)
+                .orElseThrow(() -> new UserProfileNotFound("Perfil não encontrado para o email: " + username));
 
         UserProfile.UserProfileBuilder updatedUserProfileBuilder = userProfile.toBuilder();
 
@@ -49,7 +51,7 @@ public class UserProfileService {
         UserProfile updatedUserProfile = updatedUserProfileBuilder.build();
         userProfileRepository.save(updatedUserProfile);
 
-        return new UpdateProfileResponseDTO(updatedUserProfile.getBio(), updatedUserProfile.getProfileImagePath());
+        return UpdateProfileResponseDTO.from(updatedUserProfile);
     }
 
     private void deleteExistingProfileImage(String imagePath) {
@@ -57,7 +59,7 @@ public class UserProfileService {
             File existingImage = new File(imagePath);
             if (existingImage.exists()) {
                 if (!existingImage.delete()) {
-                    throw new RuntimeException("Falha ao excluir a imagem existente: " + imagePath);
+                    throw new ImageDeletionException("Falha ao excluir a imagem existente: " + imagePath);
                 }
             }
         }

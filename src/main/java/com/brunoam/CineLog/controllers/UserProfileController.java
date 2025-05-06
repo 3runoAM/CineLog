@@ -25,6 +25,8 @@ public class UserProfileController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
 
+        if (email == null || email.isEmpty()) throw new IllegalArgumentException("Usuário autenticado não encontrado");
+
         UpdateProfileResponseDTO response = userProfileService.updateUserProfile(email, updateRequest);
         return ResponseEntity.ok(response);
     }

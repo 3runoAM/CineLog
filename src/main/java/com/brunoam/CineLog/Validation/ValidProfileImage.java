@@ -1,4 +1,4 @@
-package com.brunoam.CineLog.Validation;
+package com.brunoam.CineLog.validation;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
