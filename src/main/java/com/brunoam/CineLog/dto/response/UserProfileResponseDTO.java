@@ -2,12 +2,12 @@ package com.brunoam.CineLog.dto.response;
 
 import com.brunoam.CineLog.entities.UserProfile;
 
-public record UpdateProfileResponseDTO(
+public record UserProfileResponseDTO(
         String bio,
         String profileImagePath
 ) {
-    public static UpdateProfileResponseDTO from(UserProfile userProfile) {
-        return new UpdateProfileResponseDTO(
+    public static UserProfileResponseDTO from(UserProfile userProfile) {
+        return new UserProfileResponseDTO(
                 userProfile.getBio(),
                 userProfile.getProfileImagePath()
         );
