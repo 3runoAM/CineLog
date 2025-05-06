@@ -1,10 +1,11 @@
 package com.brunoam.CineLog.services;
 
 import com.brunoam.CineLog.dto.request.UpdateProfileRequestDTO;
-import com.brunoam.CineLog.dto.response.UpdateProfileResponseDTO;
+import com.brunoam.CineLog.dto.response.UserProfileResponseDTO;
 import com.brunoam.CineLog.entities.UserProfile;
-import com.brunoam.CineLog.exceptions.ImageDeletionException;
-import com.brunoam.CineLog.exceptions.UserProfileNotFound;
+import com.brunoam.CineLog.exception.custom.EntityDeletionException;
+import com.brunoam.CineLog.exception.custom.ImageDeletionException;
+import com.brunoam.CineLog.exception.custom.UserProfileNotFound;
 import com.brunoam.CineLog.repositories.UserProfileRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,8 +29,17 @@ public class UserProfileService {
         this.userProfileRepository = userProfileRepository;
     }
 
+    // get
+    public UserProfileResponseDTO getUserProfile(String username) {
+        UserProfile userProfile = userProfileRepository.findByAuthUser_Email(username)
+                .orElseThrow(() -> new UserProfileNotFound("Perfil não encontrado para o email: " + username));
+
+        return UserProfileResponseDTO.from(userProfile);
+    }
+
+    // patch
     @Transactional
-    public UpdateProfileResponseDTO updateUserProfile(String username, UpdateProfileRequestDTO userProfileDTO) throws IOException {
+    public UserProfileResponseDTO updateUserProfile(String username, UpdateProfileRequestDTO userProfileDTO) throws IOException {
         if (userProfileDTO.bio() == null && (userProfileDTO.profileImage() == null || userProfileDTO.profileImage().isEmpty())) {
             throw new IllegalArgumentException("Nenhum dado para atualizar");
         }
@@ -51,7 +61,20 @@ public class UserProfileService {
         UserProfile updatedUserProfile = updatedUserProfileBuilder.build();
         userProfileRepository.save(updatedUserProfile);
 
-        return UpdateProfileResponseDTO.from(updatedUserProfile);
+        return UserProfileResponseDTO.from(updatedUserProfile);
+    }
+
+    // delete
+    public void deleteUserProfile(String username) throws EntityDeletionException {
+        UserProfile userProfile = userProfileRepository.findByAuthUser_Email(username)
+                .orElseThrow(() -> new UserProfileNotFound("Perfil não encontrado para o email: " + username));
+
+        this.deleteExistingProfileImage(userProfile.getProfileImagePath());
+        userProfileRepository.delete(userProfile);
+
+        if (userProfileRepository.existsById(userProfile.getId())) {
+            throw new EntityDeletionException("Falha ao excluir o perfil do usuário: " + username);
+        }
     }
 
     private void deleteExistingProfileImage(String imagePath) {

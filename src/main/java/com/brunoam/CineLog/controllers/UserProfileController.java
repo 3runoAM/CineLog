@@ -1,7 +1,8 @@
 package com.brunoam.CineLog.controllers;
 
 import com.brunoam.CineLog.dto.request.UpdateProfileRequestDTO;
-import com.brunoam.CineLog.dto.response.UpdateProfileResponseDTO;
+import com.brunoam.CineLog.dto.response.UserProfileResponseDTO;
+import com.brunoam.CineLog.exception.custom.EntityDeletionException;
 import com.brunoam.CineLog.services.UserProfileService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -20,14 +21,37 @@ public class UserProfileController {
         this.userProfileService = userProfileService;
     }
 
+    @GetMapping
+    public ResponseEntity<UserProfileResponseDTO> getUserProfile(){
+        String email = getAuthenticatedUserEmail();
+        UserProfileResponseDTO updateUserProfileInfo = userProfileService.getUserProfile(email);
+
+        return ResponseEntity.ok(updateUserProfileInfo);
+    }
+
     @PatchMapping("/update")
-    public ResponseEntity<UpdateProfileResponseDTO> updateProfile(@Valid @ModelAttribute UpdateProfileRequestDTO updateRequest) throws IOException {
+    public ResponseEntity<UserProfileResponseDTO> updateProfile(@Valid @ModelAttribute UpdateProfileRequestDTO updateRequest) throws IOException {
+        String email = getAuthenticatedUserEmail();
+
+        UserProfileResponseDTO updateUserProfileInfo = userProfileService.updateUserProfile(email, updateRequest);
+
+        return ResponseEntity.ok(updateUserProfileInfo);
+    }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<Void> deleteProfile() throws EntityDeletionException {
+        String email = getAuthenticatedUserEmail();
+        userProfileService.deleteUserProfile(email);
+
+        return ResponseEntity.noContent().build();
+    }
+
+    private String getAuthenticatedUserEmail() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
 
         if (email == null || email.isEmpty()) throw new IllegalArgumentException("Usuário autenticado não encontrado");
 
-        UpdateProfileResponseDTO response = userProfileService.updateUserProfile(email, updateRequest);
-        return ResponseEntity.ok(response);
+        return email;
     }
 }
