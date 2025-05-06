@@ -1,6 +1,6 @@
 package com.brunoam.CineLog.dto.request;
 
-import com.brunoam.CineLog.Validation.ValidProfileImage;
+import com.brunoam.CineLog.validation.ValidProfileImage;
 import jakarta.persistence.Column;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.web.multipart.MultipartFile;
