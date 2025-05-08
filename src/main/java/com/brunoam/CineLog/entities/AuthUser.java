@@ -18,6 +18,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "users")
+@ToString(exclude = "hashPassword")
 public class AuthUser extends AuditableEntity {
     @Id
     @GeneratedValue(generator = "UUID")

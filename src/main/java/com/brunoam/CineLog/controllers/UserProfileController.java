@@ -50,7 +50,7 @@ public class UserProfileController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
 
-        if (email == null || email.isEmpty()) throw new IllegalArgumentException("Usuário autenticado não encontrado");
+        if (email == null || email.isEmpty()) throw new IllegalArgumentException("Requisição não autenticada");
 
         return email;
     }
