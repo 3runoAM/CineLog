@@ -46,6 +46,7 @@ Este projeto está licenciado sob a licença MIT. Veja o arquivo [LICENSE](LICEN
     - JPEG ou PNG;
     - Limite de 2MB;
     - 4096x4096 pixels.
+- RF4: Atualização de perfil (incluindo exclusão de conta). <b class="status-feito">[FEITO]</b>
 ---
 
 Desenvolvido por Bruno Martins (@3runoAM) ☕

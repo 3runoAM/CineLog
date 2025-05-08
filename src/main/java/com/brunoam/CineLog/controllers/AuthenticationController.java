@@ -9,6 +9,7 @@ import com.brunoam.CineLog.services.JwtService;
 import com.brunoam.CineLog.dto.response.UserResponseDTO;
 import com.brunoam.CineLog.services.UserRegistrationService;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -45,10 +46,19 @@ public class AuthenticationController {
 
     @PostMapping("/register")
     public ResponseEntity<UserResponseDTO> register(@RequestBody @Valid RegisterDTO userData) {
-        if (userRegistrationService.existsByEmail(userData.email())) return ResponseEntity.badRequest().build();
+        System.out.println("Dados recebidos");
+        if (userRegistrationService.existsByEmail(userData.email())) return ResponseEntity.status(HttpStatus.CONFLICT).build();
+
+        System.out.println("Email não existe");
+        System.out.println("User data: " + userData);
 
         AuthUser savedAuthUser = userRegistrationService.registerUser(userData);
+
+        System.out.println("AuthUser salvo: " + savedAuthUser);
+
         UserProfile savedUserProfile = userRegistrationService.registerUserProfile(savedAuthUser);
+
+        System.out.println("UserProfile salvo: " + savedUserProfile);
 
         return ResponseEntity.ok(UserResponseDTO.from(savedAuthUser, savedUserProfile));
     }

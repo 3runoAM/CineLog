@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: dev
+    active: test
   api:
     url: ${TMDB_API_URL}
 server:
@@ -8,3 +8,6 @@ server:
     context-path: /api/v1
 jwt:
   secret: ${JWT_SECRET}
+app:
+  upload:
+    path: D:\ProjectsImageRepo\profilePics\
