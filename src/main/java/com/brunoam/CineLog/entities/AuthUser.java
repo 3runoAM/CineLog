@@ -15,10 +15,10 @@ import java.util.UUID;
 @Entity
 @Getter
 @Builder
-@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "users")
+@ToString(exclude = "hashPassword")
 public class AuthUser extends AuditableEntity {
     @Id
     @GeneratedValue(generator = "UUID")

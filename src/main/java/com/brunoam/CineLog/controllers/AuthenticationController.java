@@ -46,19 +46,10 @@ public class AuthenticationController {
 
     @PostMapping("/register")
     public ResponseEntity<UserResponseDTO> register(@RequestBody @Valid RegisterDTO userData) {
-        System.out.println("Dados recebidos");
         if (userRegistrationService.existsByEmail(userData.email())) return ResponseEntity.status(HttpStatus.CONFLICT).build();
 
-        System.out.println("Email não existe");
-        System.out.println("User data: " + userData);
-
         AuthUser savedAuthUser = userRegistrationService.registerUser(userData);
-
-        System.out.println("AuthUser salvo: " + savedAuthUser);
-
         UserProfile savedUserProfile = userRegistrationService.registerUserProfile(savedAuthUser);
-
-        System.out.println("UserProfile salvo: " + savedUserProfile);
 
         return ResponseEntity.ok(UserResponseDTO.from(savedAuthUser, savedUserProfile));
     }
