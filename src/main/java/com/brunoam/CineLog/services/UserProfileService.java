@@ -1,5 +1,6 @@
 package com.brunoam.CineLog.services;
 
+import com.brunoam.CineLog.dto.request.RegisterDTO;
 import com.brunoam.CineLog.dto.request.UpdateProfileRequestDTO;
 import com.brunoam.CineLog.dto.response.UserProfileResponseDTO;
 import com.brunoam.CineLog.entities.UserProfile;
@@ -8,6 +9,7 @@ import com.brunoam.CineLog.exception.custom.ImageDeletionException;
 import com.brunoam.CineLog.exception.custom.UserProfileNotFound;
 import com.brunoam.CineLog.repositories.UserProfileRepository;
 import jakarta.transaction.Transactional;
+import jakarta.validation.constraints.Size;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -37,28 +39,41 @@ public class UserProfileService {
         return UserProfileResponseDTO.from(userProfile);
     }
 
+    // post
+    public UserProfile createUserProfile(RegisterDTO userData) throws IOException {
+        if(userProfileRepository.existsByAuthUser_Email(userData.email())) throw new IllegalArgumentException("Email já cadastrado");
+
+        String imagePath = saveProfileImage(userData.profileImage());
+
+        UserProfile userProfile = UserProfile.builder()
+                .firstName(userData.firstName())
+                .lastName(userData.lastName())
+                .bio(userData.bio())
+                .profileImagePath(imagePath)
+                .build();
+
+        return userProfileRepository.save(userProfile);
+    }
+
     // patch
     @Transactional
     public UserProfileResponseDTO updateUserProfile(String username, UpdateProfileRequestDTO userProfileDTO) throws IOException {
-        if (userProfileDTO.bio() == null && (userProfileDTO.profileImage() == null || userProfileDTO.profileImage().isEmpty())) {
-            throw new IllegalArgumentException("Nenhum dado para atualizar");
-        }
-
         UserProfile userProfile = userProfileRepository.findByAuthUser_Email(username)
                 .orElseThrow(() -> new UserProfileNotFound("Perfil não encontrado para o email: " + username));
 
-        UserProfile.UserProfileBuilder updatedUserProfileBuilder = userProfile.toBuilder();
+        UserProfile.UserProfileBuilder updateUserProfileBuilder = userProfile.toBuilder();
 
-        if (userProfileDTO.bio() != null) updatedUserProfileBuilder.bio(userProfileDTO.bio());
-
+        if (userProfileDTO.bio() != null) updateUserProfileBuilder.bio(userProfileDTO.bio());
         if (userProfileDTO.profileImage() != null && !userProfileDTO.profileImage().isEmpty()) {
             this.deleteExistingProfileImage(userProfile.getProfileImagePath());
 
             String imagePath = saveProfileImage(userProfileDTO.profileImage());
-            updatedUserProfileBuilder.profileImagePath(imagePath);
+            updateUserProfileBuilder.profileImagePath(imagePath);
         }
 
-        UserProfile updatedUserProfile = updatedUserProfileBuilder.build();
+        if (userProfileDTO.firstName() != null && !userProfileDTO.firstName().isBlank()) updateUserProfileBuilder.firstName(userProfileDTO.firstName());
+
+        UserProfile updatedUserProfile = updateUserProfileBuilder.build();
         userProfileRepository.save(updatedUserProfile);
 
         return UserProfileResponseDTO.from(updatedUserProfile);

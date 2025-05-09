@@ -7,14 +7,16 @@ public record AuthenticationResponseDTO(
         String email,
         String firstName,
         String lastName,
+        String bio,
         String profileImagePath
 ) {
     public static AuthenticationResponseDTO from(String token, AuthUser user) {
         return new AuthenticationResponseDTO(
                 token,
                 user.getEmail(),
-                user.getFirstName(),
-                user.getLastName(),
+                user.getUserProfile().getFirstName(),
+                user.getUserProfile().getLastName(),
+                user.getUserProfile().getBio(),
                 user.getUserProfile().getProfileImagePath()
         );
     }

@@ -17,6 +17,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+
 
 @RestController
 @RequestMapping("auth")
@@ -45,12 +47,11 @@ public class AuthenticationController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<UserResponseDTO> register(@RequestBody @Valid RegisterDTO userData) {
+    public ResponseEntity<UserResponseDTO> register(@RequestBody @Valid RegisterDTO userData) throws IOException {
         if (userRegistrationService.existsByEmail(userData.email())) return ResponseEntity.status(HttpStatus.CONFLICT).build();
 
-        AuthUser savedAuthUser = userRegistrationService.registerUser(userData);
-        UserProfile savedUserProfile = userRegistrationService.registerUserProfile(savedAuthUser);
+        UserResponseDTO savedUser = userRegistrationService.registerUser(userData);
 
-        return ResponseEntity.ok(UserResponseDTO.from(savedAuthUser, savedUserProfile));
+        return ResponseEntity.ok(savedUser);
     }
 }

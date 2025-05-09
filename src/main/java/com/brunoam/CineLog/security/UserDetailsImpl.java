@@ -45,13 +45,4 @@ public class UserDetailsImpl implements UserDetails {
     public String getUsername() {
         return authUser.getEmail();
     }
-
-    /**
-    * Retorna o nome completo do usuário.
-    *
-    * @return o nome completo do usuário
-    */
-    public String getFullName() {
-        return authUser.getFirstName() + " " + authUser.getLastName();
-    }
 }
