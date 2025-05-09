@@ -8,4 +8,6 @@ import java.util.UUID;
 
 public interface UserProfileRepository extends JpaRepository<UserProfile, UUID> {
     Optional<UserProfile> findByAuthUser_Email(String username);
+
+    boolean existsByAuthUser_Email(String email);
 }

@@ -1,6 +1,8 @@
 package com.brunoam.CineLog.services;
 
 import com.brunoam.CineLog.dto.request.RegisterDTO;
+import com.brunoam.CineLog.dto.response.UserProfileResponseDTO;
+import com.brunoam.CineLog.dto.response.UserResponseDTO;
 import com.brunoam.CineLog.entities.AuthUser;
 import com.brunoam.CineLog.entities.UserProfile;
 import com.brunoam.CineLog.enums.Role;
@@ -10,52 +12,48 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
 @Service
 public class UserRegistrationService {
-    private final AuthUserRepository userRepository;
-    private final UserProfileRepository userProfileRepository;
+    private final AuthUserRepository authUserRepository;
+    private final UserProfileService userProfileService;
     private final PasswordEncoder passwordEncoder;
 
-    public UserRegistrationService(AuthUserRepository userRepository, UserProfileRepository userProfileRepository, PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.userProfileRepository = userProfileRepository;
+    public UserRegistrationService(AuthUserRepository authUserRepository, UserProfileService userProfileService, PasswordEncoder passwordEncoder) {
+        this.authUserRepository = authUserRepository;
+        this.userProfileService = userProfileService;
         this.passwordEncoder = passwordEncoder;
     }
 
     public AuthUser findByEmail(String email) {
-        return userRepository.findByEmail(email)
+        return authUserRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 
     public boolean existsByEmail(String email) {
-        return userRepository.existsByEmail(email);
+        return authUserRepository.existsByEmail(email);
     }
 
-    public AuthUser registerUser(RegisterDTO userData){
+    public UserResponseDTO registerUser(RegisterDTO userData) throws IOException {
         String encryptedPassword = passwordEncoder.encode(userData.password());
+
+        UserProfile userProfile = userProfileService.createUserProfile(userData);
 
         Set<Role> roles = new HashSet<>();
         roles.add(Role.ROLE_USER);
 
-        AuthUser newAuthUser = AuthUser.builder()
+        AuthUser authUser = AuthUser.builder()
                 .email(userData.email())
                 .hashPassword(encryptedPassword)
-                .firstName(userData.firstName())
-                .lastName(userData.lastName())
                 .roles(roles)
+                .userProfile(userProfile)
                 .build();
 
-        return userRepository.save(newAuthUser);
-    }
+        AuthUser savedUser = authUserRepository.save(authUser);
 
-    public UserProfile registerUserProfile(AuthUser savedAuthUser){
-        UserProfile newUserProfile = UserProfile.builder()
-                .authUser(savedAuthUser)
-                .build();
-
-        return userProfileRepository.save(newUserProfile);
+        return UserResponseDTO.from(savedUser);
     }
 }

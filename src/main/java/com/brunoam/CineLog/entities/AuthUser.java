@@ -33,14 +33,6 @@ public class AuthUser extends AuditableEntity {
     @Column(nullable = false, columnDefinition = "CHAR(60)")
     private String hashPassword;
 
-    @NotBlank
-    @Size(max = 50)
-    private String firstName;
-
-    @NotBlank
-    @Size(max = 50)
-    private String lastName;
-
     @ElementCollection(fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;

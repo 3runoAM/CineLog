@@ -18,15 +18,15 @@ public record UserResponseDTO(
         String profileUrl,
         LocalDateTime createdAt
 ) {
-    public static UserResponseDTO from(AuthUser authUser, UserProfile userProfile) {
+    public static UserResponseDTO from(AuthUser authUser) {
         return new UserResponseDTO(
                 authUser.getId(),
                 authUser.getEmail(),
-                authUser.getFirstName(),
-                authUser.getLastName(),
+                authUser.getUserProfile().getFirstName(),
+                authUser.getUserProfile().getLastName(),
                 authUser.getRoles(),
-                userProfile.getBio(),
-                userProfile.getProfileImagePath(),
+                authUser.getUserProfile().getBio(),
+                authUser.getUserProfile().getProfileImagePath(),
                 authUser.getCreatedAt()
         );
     }
