@@ -1,7 +1,7 @@
-package com.brunoam.CineLog.services;
+package com.brunoam.CineLog.services.auth;
 
 import com.brunoam.CineLog.repositories.AuthUserRepository;
-import com.brunoam.CineLog.security.UserDetailsImpl;
+import com.brunoam.CineLog.security.auth.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

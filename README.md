@@ -1,7 +1,7 @@
 <style>
-.status-feito { color: green; }
-.status-adiado { color: orange; }
-.status-progresso { color: blue; }
+  .status-feito { color: green; }
+  .status-adiado { color: orange; }
+  .status-progresso { color: blue; }
 </style>
 # CineLog API (Letterboxd clone)
 
@@ -48,5 +48,4 @@ Este projeto está licenciado sob a licença MIT. Veja o arquivo [LICENSE](LICEN
     - 4096x4096 pixels.
 - RF4: Atualização de perfil (incluindo exclusão de conta). <b class="status-feito">[FEITO]</b>
 ---
-
 Desenvolvido por Bruno Martins (@3runoAM) ☕

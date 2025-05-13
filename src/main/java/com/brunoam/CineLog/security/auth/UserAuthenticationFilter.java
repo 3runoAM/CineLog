@@ -1,7 +1,7 @@
-package com.brunoam.CineLog.security;
+package com.brunoam.CineLog.security.auth;
 
 import com.brunoam.CineLog.repositories.AuthUserRepository;
-import com.brunoam.CineLog.services.JwtService;
+import com.brunoam.CineLog.services.auth.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -30,19 +31,23 @@ public class UserAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         var token = this.recoverToken(request);
-        if(token != null){
+        if (token != null) {
             String username = jwtTokenService.getUsername(token);
-            userRepository.findByEmail(username).ifPresent(user -> {
-                UserDetails userDetails = UserDetailsImpl.builder().authUser(user).build();
+            var user = userRepository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
 
-                var authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-            });
+            UserDetails userDetails = UserDetailsImpl.builder().authUser(user).build();
+
+            if (!jwtTokenService.isTokenValid(token, userDetails)) throw new RuntimeException("Token inválido");
+
+            var authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+            SecurityContextHolder.getContext().setAuthentication(authentication);
         }
         filterChain.doFilter(request, response);
     }
 
-    private String recoverToken(HttpServletRequest request){
+    private String recoverToken(HttpServletRequest request) {
         return request.getHeader("Authorization");
     }
 }
+
+

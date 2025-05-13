@@ -41,7 +41,7 @@ public class UserProfileService {
 
     // post
     public UserProfile createUserProfile(RegisterDTO userData) throws IOException {
-        if(userProfileRepository.existsByAuthUser_Email(userData.email())) throw new IllegalArgumentException("Email já cadastrado");
+        if(userProfileRepository.existsByAuthUser_Email(userData.email())) throw new IllegalArgumentException("Email já possui um perfil");
 
         String imagePath = saveProfileImage(userData.profileImage());
 

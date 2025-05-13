@@ -1,4 +1,4 @@
-package com.brunoam.CineLog.security;
+package com.brunoam.CineLog.security.auth;
 
 import com.brunoam.CineLog.entities.AuthUser;
 import lombok.Builder;
