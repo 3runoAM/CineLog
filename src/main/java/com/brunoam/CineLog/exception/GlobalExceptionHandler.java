@@ -2,6 +2,7 @@ package com.brunoam.CineLog.exception;
 
 import com.brunoam.CineLog.exception.custom.EntityDeletionException;
 import com.brunoam.CineLog.exception.custom.ImageDeletionException;
+import com.brunoam.CineLog.exception.custom.InvalidTokenException;
 import com.brunoam.CineLog.exception.custom.UserProfileNotFound;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,10 +34,10 @@ public class GlobalExceptionHandler {
                 .body("Usuário não encontrado: " + e.getMessage());
     }
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<String> handleGenericException(Exception e) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body("Ocorreu um erro inesperado: " + e.getMessage());
+    @ExceptionHandler(InvalidTokenException.class)
+    public ResponseEntity<String> handleInvalidTokenException(InvalidTokenException e) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body("Token inválido: " + e.getMessage());
     }
 
     @ExceptionHandler(EntityDeletionException.class)
@@ -44,5 +45,11 @@ public class GlobalExceptionHandler {
     ResponseEntity<String> handleEntityDeletionException(EntityDeletionException e) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body("Erro ao deletar entidade: " + e.getMessage());
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<String> handleGenericException(Exception e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body("Ocorreu um erro inesperado: " + e.getMessage());
     }
 }

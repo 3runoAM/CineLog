@@ -1,4 +1,4 @@
-package com.brunoam.CineLog.services;
+package com.brunoam.CineLog.services.auth;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
