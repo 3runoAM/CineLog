@@ -1,5 +1,6 @@
 package com.brunoam.CineLog.security.auth;
 
+import com.brunoam.CineLog.exception.custom.InvalidTokenException;
 import com.brunoam.CineLog.repositories.AuthUserRepository;
 import com.brunoam.CineLog.services.auth.JwtService;
 import jakarta.servlet.FilterChain;
@@ -37,7 +38,7 @@ public class UserAuthenticationFilter extends OncePerRequestFilter {
 
             UserDetails userDetails = UserDetailsImpl.builder().authUser(user).build();
 
-            if (!jwtTokenService.isTokenValid(token, userDetails)) throw new RuntimeException("Token inválido");
+            if (!jwtTokenService.isTokenValid(token, userDetails)) throw new InvalidTokenException("Token inválido");
 
             var authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
